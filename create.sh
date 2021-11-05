@@ -19,6 +19,7 @@ export utils_path="$parent_path/utils" || exit 1
 export development_path="$parent_path/development" || exit 1
 
 . $utils_path/colors.sh
+echo -e "${LCYAN}RUNNING CREATE.SH"
 
 echo -e "${GREEN}Welcome to the create script. Let's get started creating your project!"
 echo -n -e "Enter a PROJECT_ID (i.e. '${LCYAN}mydomain-com${GREEN}'):\n
@@ -34,6 +35,7 @@ I wish I had thought of it first!${WHITE}\n"
 
 # ==========================================
 
+echo -e "${LCYAN}RUNNING GCLOUD AUTH LOGIN"
 gcloud auth login 
 
 bash $creation_path/create-project.sh || exit 1
@@ -65,7 +67,7 @@ bash $creation_path/apply-manifests.sh || exit 1
 
 bash $utils_path/get-pods.sh || exit 1
 
-bash $creation_path/dev_init.sh || exit 1
+bash $creation_path/dev-init.sh || exit 1
 
 bash $utils_path/get-frontend-ip.sh || exit 1 # Can take about 5 minutes
 

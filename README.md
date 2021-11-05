@@ -12,3 +12,11 @@ Pre-reqs:
 [gcloud cli](https://cloud.google.com/sdk/docs/install)
 
 [scaffold](https://skaffold.dev/docs/install/)
+
+
+How to:
+=========
+
+>>> bash gcp-sh/create.sh
+
+>>> bash gcp-sh/dev.sh

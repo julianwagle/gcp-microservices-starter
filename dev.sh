@@ -10,7 +10,7 @@ if [ "$len" -eq "1" ]; then
     Thou Dwelleth Too Close To Me! ... 
     Depart Backwards From Me At Least One Directory, At Once! 
     Let It Be Done As I Have Spoken It, According To My Words. 
-    And Then Thou May Treth Once More, If Thou So Chooseth!\n
+    Then, And Only Then, Thou May Tryeth Once More, If Thou So Chooseth!\n
     "
 fi
 

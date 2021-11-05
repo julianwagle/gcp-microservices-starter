@@ -1,6 +1,19 @@
 #!/bin/bash
 
+
 export sh_dir=$(dirname "${BASH_SOURCE[0]}")
+len=$(echo ${#sh_dir})
+if [ "$len" -eq "1" ]; then
+    echo -n -e "
+    From Whence Thou Runneth Thine Commands Is Ghastly And
+    Absolutely Out Of Keeping With All That Is Just And True, 
+    Thou Dwelleth Too Close To Me! ... 
+    Depart Backwards From Me At Least One Directory, At Once! 
+    Let It Be Done As I Have Spoken It, According To My Words. 
+    And Then Thou May Treth Once More, If Thou So Chooseth!\n
+    "
+fi
+
 export parent_path="$(cd "$(dirname "$1")"; pwd -P)/$(basename "$1")$sh_dir"
 export grandparent_path="$(cd "$(dirname "$1")"; pwd -P)/" || exit 1
 export creation_path="$parent_path/creation" || exit 1
@@ -14,8 +27,8 @@ echo -e "${LCYAN}RUNNING DEV.SH"
 echo -e "${LPURPLE}===================================================================================="
 
 echo -e "${LCYAN}GETTING PROJECT_ID"
-exported_pid=$($PROJECT_ID | wc -c)  || exit 1
-if [ "$exported_pid" -eq "0" ]; then
+len=$(echo ${#PROJECT_ID})
+if [ "$len" -eq "0" ]; then
     echo -n -e "Enter your PROJECT_ID:\n"
     read PROJECT_ID
     export PROJECT_ID

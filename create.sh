@@ -10,6 +10,18 @@
 # scaffold # https://skaffold.dev/docs/install/
 
 export sh_dir=$(dirname "${BASH_SOURCE[0]}") || exit 1
+len=$(echo ${#sh_dir})
+if [ "$len" -eq "1" ]; then
+    echo -n -e "
+    From Whence Thou Runneth Thine Commands Is Ghastly And
+    Absolutely Out Of Keeping With All That Is Just And True, 
+    Thou Dwelleth Too Close To Me! ... 
+    Depart Backwards From Me At Least One Directory, At Once! 
+    Let It Be Done As I Have Spoken It, According To My Words. 
+    And Then Thou May Treth Once More, If Thou So Chooseth!\n
+    "
+fi
+
 export parent_path="$(cd "$(dirname "$1")"; pwd -P)/$(basename "$1")$sh_dir" || exit 1
 export grandparent_path="$(cd "$(dirname "$1")"; pwd -P)/" || exit 1
 export creation_path="$parent_path/creation" || exit 1

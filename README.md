@@ -17,6 +17,8 @@ Pre-reqs:
 How to:
 =========
 
->>> bash gcp-sh/create.sh
+> git clone https://github.com/julianwagle/gcp-microservices-starter.git gcp-sh
 
->>> bash gcp-sh/dev.sh
+> bash gcp-sh/create.sh
+
+> bash gcp-sh/dev.sh

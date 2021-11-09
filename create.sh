@@ -61,7 +61,7 @@ rm -rf $parent_path/.env
 
 touch $parent_path/.env
 
-echo -en "PROEJCT_ID=$PROJECT_ID\nACCOUNT_EMAIL=$ACCOUNT_EMAIL" > $parent_path/.env
+echo -en "PROJECT_ID=$PROJECT_ID\nACCOUNT_EMAIL=$ACCOUNT_EMAIL" > $parent_path/.env
 
 echo -e "${LPURPLE}===================================================================================="
 

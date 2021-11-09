@@ -41,6 +41,7 @@ ${LRED}Rules: Enter only letters, numbers, or hyphens.\n
 ${LBROWN}Recommendations: This should be the same as your domain with a hyphen or nothing instead of a dot.${LCYAN}\n"
 
 read PROJECT_ID || exit 1
+
 export PROJECT_ID || exit 1
 
 echo -e "${CYAN}Congrats on starting a new project!\n
@@ -51,6 +52,18 @@ echo -e "${LPURPLE}=============================================================
 
 echo -e "${LCYAN}RUNNING GCLOUD AUTH LOGIN"
 gcloud auth login 
+
+ACCOUNT_EMAIL="$(gcloud config get-value account)"
+
+echo -e "${LPURPLE}===================================================================================="
+
+rm -rf $parent_path/.env
+
+touch $parent_path/.env
+
+echo -en "PROEJCT_ID=$PROJECT_ID\nACCOUNT_EMAIL=$ACCOUNT_EMAIL" > $parent_path/.env
+
+echo -e "${LPURPLE}===================================================================================="
 
 echo -e "${LCYAN}CREATE-PROJECT.SH"
 bash $creation_path/create-project.sh || exit 1

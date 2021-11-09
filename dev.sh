@@ -27,6 +27,9 @@ echo -e "${LCYAN}RUNNING DEV.SH"
 echo -e "${LPURPLE}===================================================================================="
 
 echo -e "${LCYAN}GETTING PROJECT_ID"
+PROJECT_ID="$(sed '1q;d' $parent_path/.env)"
+PROJECT_ID=`echo $PROJECT_ID | sed 's/PROJECT_ID=//'`
+export PROJECT_ID=`echo $PROJECT_ID | sed 's/ *$//g'`
 len=$(echo ${#PROJECT_ID})
 if [ "$len" -eq "0" ]; then
     echo -n -e "Enter your PROJECT_ID:\n"
@@ -36,8 +39,16 @@ fi
 
 echo -e "${LPURPLE}===================================================================================="
 
-echo -e "${LCYAN}RUNNING GCLOUD AUTH LOGIN"
-gcloud auth login 
+ACCOUNT_EMAIL="$(sed '2q;d' $parent_path/.env)"
+ACCOUNT_EMAIL=`echo $ACCOUNT_EMAIL | sed 's/ACCOUNT_EMAIL=//'`
+ACCOUNT_EMAIL=`echo $ACCOUNT_EMAIL | sed 's/ *$//g'`
+CURRENT_EMAIL="$(gcloud config get-value account)"
+if [ "$ACCOUNT_EMAIL" == "$CURRENT_EMAIL" ]; then
+    echo "LOGGED IN!"
+else
+    echo -e "${LCYAN}RUNNING GCLOUD AUTH LOGIN"
+    gcloud auth login --brief
+fi
 
 echo -e "${LCYAN}RUNNING INSTALL KUBECTL"
 gcloud components install kubectl

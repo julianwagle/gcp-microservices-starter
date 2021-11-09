@@ -39,6 +39,14 @@ echo -e "${LPURPLE}=============================================================
 echo -e "${LCYAN}RUNNING GCLOUD AUTH LOGIN"
 gcloud auth login 
 
+echo -e "${LCYAN}RUNNING INSTALL KUBECTL"
+gcloud components install kubectl
+
+echo -e "${LCYAN}ENABLE-PROJECT.SH.SH"
+bash $utils_path/enable-project.sh || exit 1
+
+echo -e "${LPURPLE}===================================================================================="
+
 echo -e "${LCYAN}EXPORTING CREDENTIALS"
 export SERVICE_ACCOUNT="$PROJECT_ID-service-account" || exit 1
 export certs_path="$grandparent_path/$PROJECT_ID/certs/" || exit 1
@@ -50,13 +58,20 @@ echo -e "${LPURPLE}=============================================================
 echo -e "${LCYAN}STARTING MINICUBE"
 minikube start --cpus=8 --memory 16000 --disk-size 64g || exit 1
 
+
+echo -e "${LPURPLE}===================================================================================="
+
+echo -e "${LCYAN}APPLY-MANIFESTS.SH"
+bash $creation_path/apply-manifests.sh || exit 1
+
+echo -e "${LCYAN}GET-PODS.SH"
+bash $utils_path/get-pods.sh || exit 1
+
+
 echo -e "${LPURPLE}===================================================================================="
 
 echo -e "${LCYAN}RUNNING SETUP-DEV.SH"
 bash $development_path/setup-dev.sh || exit 1
-
-echo -e "${LCYAN}RUNNING ENABLE-PROJECT.SH"
-bash $utils_path/enable-project.sh || exit 1
 
 echo -e "${LCYAN}RUNNING GET-NODES.SH"
 bash $utils_path/get-nodes.sh || exit 1

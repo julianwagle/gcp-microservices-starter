@@ -11,7 +11,7 @@ function repeat () {
 
 function printFrontendIp () {
 
-    if [ "$1" == "ending" ]; then
+    if [ "$1" == "<pending>" ]; then
         repeat
     fi
 
@@ -23,6 +23,7 @@ function getFrontendIp () {
     output=$(kubectl get service frontend-external | awk '{print $4}')
     output=`echo $output | sed 's/EXTERNAL-IP//'`
     output=`echo $output | sed 's/ *$//g'`
+    echo $output
     printFrontendIp $output
     # printFrontendIp 'ending' # For Testing
 

@@ -22,3 +22,8 @@ How to:
 > bash gcp-sh/create.sh
 
 > bash gcp-sh/dev.sh
+
+> bash gcp-sh/down.sh
+
+> bash gcp-sh/deletion/scrubadubdub.sh
+

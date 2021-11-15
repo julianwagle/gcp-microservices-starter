@@ -22,10 +22,10 @@ export utils_path="$parent_path/utils"
 
 . $utils_path/colors.sh  || exit 1
 
+echo -e "${LPURPLE}===================================================================================="
 echo -e "${LCYAN}RUNNING DEV.SH"
 
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}GETTING PROJECT_ID"
 PROJECT_ID="$(sed '1q;d' $parent_path/.env)"
 PROJECT_ID=`echo $PROJECT_ID | sed 's/PROJECT_ID=//'`
@@ -38,7 +38,7 @@ if [ "$len" -eq "0" ]; then
 fi
 
 echo -e "${LPURPLE}===================================================================================="
-
+echo -e "${LCYAN}CHECKING AUTH STATUS"
 ACCOUNT_EMAIL="$(sed '2q;d' $parent_path/.env)"
 ACCOUNT_EMAIL=`echo $ACCOUNT_EMAIL | sed 's/ACCOUNT_EMAIL=//'`
 ACCOUNT_EMAIL=`echo $ACCOUNT_EMAIL | sed 's/ *$//g'`
@@ -46,18 +46,26 @@ CURRENT_EMAIL="$(gcloud config get-value account)"
 if [ "$ACCOUNT_EMAIL" == "$CURRENT_EMAIL" ]; then
     echo "LOGGED IN!"
 else
+    echo -e "${LPURPLE}===================================================================================="
     echo -e "${LCYAN}RUNNING GCLOUD AUTH LOGIN"
     gcloud auth login --brief
 fi
 
-echo -e "${LCYAN}RUNNING INSTALL KUBECTL"
-gcloud components install kubectl
+echo -e "${LPURPLE}===================================================================================="
+echo -e "${LCYAN}CHECKING KUBECTL INSTALL"
+comps="$(gcloud components list --only-local-state --filter=kubectl)"
+if [[ $comps == *"ubectl"* ]]; then
+    echo -e "${LCYAN}ITS ALREADY INSTALLED!"
+else
+    echo -e "${LCYAN}RUNNING INSTALL KUBECTL!"
+    gcloud components install kubectl
+fi
 
+echo -e "${LPURPLE}===================================================================================="
 echo -e "${LCYAN}ENABLE-PROJECT.SH.SH"
 bash $utils_path/enable-project.sh || exit 1
 
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}EXPORTING CREDENTIALS"
 export SERVICE_ACCOUNT="$PROJECT_ID-service-account" || exit 1
 export certs_path="$grandparent_path/$PROJECT_ID/certs/" || exit 1
@@ -65,40 +73,41 @@ export cert_file_path="$certs_path/$SERVICE_ACCOUNT.json" || exit 1
 export GOOGLE_APPLICATION_CREDENTIALS=$cert_file_path || exit 1
 
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}STARTING MINICUBE"
 minikube start --cpus=8 --memory 16000 --disk-size 64g || exit 1
 
-
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}APPLY-MANIFESTS.SH"
 bash $creation_path/apply-manifests.sh || exit 1
 
+echo -e "${LPURPLE}===================================================================================="
 echo -e "${LCYAN}GET-PODS.SH"
 bash $utils_path/get-pods.sh || exit 1
 
-
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}RUNNING SETUP-DEV.SH"
 bash $development_path/setup-dev.sh || exit 1
 
+echo -e "${LPURPLE}===================================================================================="
 echo -e "${LCYAN}RUNNING GET-NODES.SH"
 bash $utils_path/get-nodes.sh || exit 1
 
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}HEADING INTO PROJECT ROOT"
 cd $PROJECT_ID || exit 1
 
+echo -e "${LPURPLE}===================================================================================="
+echo -e "${LCYAN}RUNNING SKAFFOLD DELETE"
+skaffold delete
+
+echo -e "${LPURPLE}===================================================================================="
 echo -e "${LCYAN}RUNNING SKAFFOLD RUN"
 skaffold run --default-repo=gcr.io/$PROJECT_ID || exit 1
 
 echo -e "${LPURPLE}===================================================================================="
-
 echo -e "${LCYAN}RUNNING GET-PODS.SH"
 bash $utils_path/get-pods.sh || exit 1
 
+echo -e "${LPURPLE}===================================================================================="
 echo -e "${LCYAN}RUNNING MINICUDE SERVICE FRONT ..."
 minikube service frontend-external || exit 1
